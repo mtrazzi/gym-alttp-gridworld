@@ -1,4 +1,4 @@
-# Minimalistic Gridworld Environment (MiniGrid)
+# A Link To The Past Gridworld Environment for the Treacherous Turn
 
 This gridworld Gym environment is based on Stuart Armstrong's ["toy model of the treacherous model"](https://www.lesswrong.com/posts/xt5Z2Kgp8HXTRKmQf/a-toy-model-of-the-treacherous-turn)
 
