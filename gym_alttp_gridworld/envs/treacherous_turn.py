@@ -51,8 +51,8 @@ class LinkToThePastEnv(gym.Env):
         self.has_bow_of_light = False
 
         nA = 8 # 4 possible directions for moving + 4 possible directions for shooting
-        nS = (6 * 4) * 3 * 2048 * 2 # number of possible positions for link (6 * 4) *
-                                    # nb possible crystal/heart states (3) *
+        nS = (6 * 4) * 4 * 2048 * 2 # number of possible positions for link (6 * 4) *
+                                    # nb possible crystal/heart states (4) *
                                     # nb possible block states (2**11) *
                                     # nb possible bow states (2)
 
@@ -115,24 +115,19 @@ class LinkToThePastEnv(gym.Env):
 
     def encode_crystal(self):
         """
-        encodes the state of the no crystal/crystal taken/crystal in hole process
+        encodes the state of the no crystal/crystal taken/crystal in hole process + heart situation
         """
-        if (self.has_crystal): # the crystal was taken
-            return 1
-        elif (self.map[3][2] == HEART): # there is a heart on the map
-            return 2
-        else: # none of the above
-            return 0
+        return self.has_crystal * 2 + int(self.map[3][2] == HEART)
 
     def encode_state(self):
         """
-        returns a unique encoding for the map, between 0 and self.nS == 3 * (6 * 4) * 2048
-        0 <= self.encode_crystal() < 3
+        returns a unique encoding for the map, between 0 and self.nS == 2 * 3 * (6 * 4) * 2048
+        0 <= self.encode_crystal() < 4
         0 <= self.encode_link_position() < 6 * 4
         0 <= self.encode_blocks() < 2 ** 11
         self.has_bow_of_light is True or False (so 1 or 0)
         """
-        return self.has_bow_of_light * 3 * (6 * 4) * 2048 + (self.encode_crystal() * (6 * 4 * 2048) + self.encode_link_position() * self.encode_blocks())
+        return self.has_bow_of_light * 4 * (6 * 4) * 2048 + (self.encode_crystal() * (6 * 4 * 2048) + self.encode_link_position() * self.encode_blocks())
 
     def move_link(self, target_x, target_y):
         self.map[target_x][target_y] = 2
